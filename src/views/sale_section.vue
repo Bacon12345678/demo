@@ -20,8 +20,6 @@
 
                 <sale_item />
 
-
-
             </div>
         </div>
     </section>

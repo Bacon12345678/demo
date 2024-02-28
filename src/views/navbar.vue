@@ -8,6 +8,8 @@ import notification from './navbar_components/notification.vue';
 import user_profile from './navbar_components/user_profile.vue';
 import sale_section from './sale_section.vue';
 
+import loginpage from './loginpage.vue'
+
 </script>
 
 <template>

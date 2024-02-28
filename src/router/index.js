@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import navbar from '../views/navbar.vue'
 import sale_section from '../views/sale_section.vue'
+import loginpageVue from '../views/loginpage.vue'
+import productspageVue from '../views/sale_section_component/productspage.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,8 +19,17 @@ const router = createRouter({
           component: sale_section
         }
       ]
+    },
+    {
+      path: '/login',
+      component: loginpageVue
+    },
+    {
+      path: '/product',
+      component:productspageVue
     }
   ]
 })
 
 export default router
+
