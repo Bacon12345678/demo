@@ -3,6 +3,7 @@ import navbar from '../views/navbar.vue'
 import sale_section from '../views/sale_section.vue'
 import loginpageVue from '../views/loginpage.vue'
 import productspageVue from '../views/sale_section_component/productspage.vue'
+import product_detailVue from '../views/product_detail.vue'
 
 
 const router = createRouter({
@@ -27,6 +28,10 @@ const router = createRouter({
     {
       path: '/product',
       component:productspageVue
+    },
+    {
+      path:'/detail',
+      component:product_detailVue
     }
   ]
 })

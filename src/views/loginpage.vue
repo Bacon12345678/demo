@@ -1,18 +1,20 @@
 <template>
+    <div>
+        <h1>Rechain</h1>
+        <h2>登入</h2>
+    </div>
 
-    <h1>Rechain</h1>
-    <h2>註冊</h2>
 
-    <form>
+    <form method="post" class="loginForm"  @submit.prevent>
     <!-- Email input -->
     <div class="form-outline mb-4">
-        <input type="email" id="form2Example1" class="form-control" />
+        <input type="email" class="form-control" v-model="users.email" />
         <label class="form-label" for="form2Example1">Email</label>
     </div>
 
     <!-- Password input -->
     <div class="form-outline mb-4">
-        <input type="password" id="form2Example2" class="form-control" />
+        <input type="password" class="form-control" v-model="users.password" />
         <label class="form-label" for="form2Example2">密碼</label>
     </div>
 
@@ -42,6 +44,34 @@
     </form>
   </template>
   
-  <script setup>
-    
+
+
+  <script>
+    import { users } from '@/assets/temp-data.js'
+    import { ref } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    export default {
+  setup() {
+    const user = ref({
+      email: "",
+      password: ""
+    });
+    const router = useRouter();
+
+    const userLogin = async () => {
+      try {
+        await users.signInWithEmailAndPassword(users.value.email, users.value.password);
+        router.push("/admin");
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    return {
+      user,
+      userLogin
+    };
+  }
+};
   </script>
