@@ -7,6 +7,37 @@ import delicateBottle from '../assets/product-img/delicate-bottle.jpg';
 import mediumBottle from '../assets/product-img/medium-bottle.jpg';
 import boldBottle from '../assets/product-img/bold-bottle.jpg';
 
+export const cartItems = [
+    {
+        id: '123',
+        name: 'Basil',
+        price: '$26.00',
+        imageName: basilBottle,
+        condition:'New',
+        location:'Taipei',
+        info:'New. English novel.',
+        amount: 1 ,
+    }, {
+        id: '234',
+        name: 'Lemon',
+        price: '$26.00',
+        imageName: lemonBottle,
+        condition:'New',
+        location:'Taipei',
+        info:'New. English novel.',
+        amount:1,
+    }, {
+        id: '345',
+        name: 'Garlic',
+        price: '$26.00',
+        imageName: garlicBottle,
+        condition:'New',
+        location:'Taipei',
+        info:'New. English novel.',
+        amount:1,
+    }
+]
+
 export const products = [{
     id: '123',
     name: 'Basil',
@@ -14,7 +45,8 @@ export const products = [{
     imageName: basilBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '234',
     name: 'Lemon',
@@ -22,7 +54,8 @@ export const products = [{
     imageName: lemonBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '345',
     name: 'Garlic',
@@ -30,7 +63,8 @@ export const products = [{
     imageName: garlicBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '456',
     name: 'Rosemary',
@@ -38,7 +72,8 @@ export const products = [{
     imageName: rosemaryBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '567',
     name: 'Chili',
@@ -46,7 +81,8 @@ export const products = [{
     imageName: chiliBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '678',
     name: 'Delicate',
@@ -54,7 +90,8 @@ export const products = [{
     imageName: delicateBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '789',
     name: 'Medium',
@@ -62,7 +99,8 @@ export const products = [{
     imageName: mediumBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }, {
     id: '890',
     name: 'Bold',
@@ -70,7 +108,8 @@ export const products = [{
     imageName: boldBottle,
     condition:'New',
     location:'Taipei',
-    info:'New. English novel.'
+    info:'New. English novel.',
+    amount:1,
 }];
 
 export const users = [{
@@ -78,5 +117,6 @@ export const users = [{
     name: 'Jack',
     email:'Jack001@gmail.com',
     password:'Jack001',
-    phone:'0909000001'
+    phone:'0909000001',
+    amount:1,
 }]
