@@ -6,9 +6,7 @@ import carbon_point from './navbar_components/carbon_point.vue';
 import cart from './navbar_components/cart.vue';
 import notification from './navbar_components/notification.vue';
 import user_profile from './navbar_components/user_profile.vue';
-import sale_section from './sale_section.vue';
 
-import loginpage from './loginpage.vue'
 
 </script>
 
@@ -37,8 +35,4 @@ import loginpage from './loginpage.vue'
       </div>
     </nav>
   </div>
-
-  <sale_section />
-
-
 </template>

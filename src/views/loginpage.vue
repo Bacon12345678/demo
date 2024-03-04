@@ -8,14 +8,14 @@
     <form method="post" class="loginForm"  @submit.prevent>
     <!-- Email input -->
     <div class="form-outline mb-4">
-        <input type="email" class="form-control" v-model="users.email" />
-        <label class="form-label" for="form2Example1">Email</label>
+        <input type="email" class="form-control" />
+        <label class="form-label" >Email</label>
     </div>
 
     <!-- Password input -->
     <div class="form-outline mb-4">
-        <input type="password" class="form-control" v-model="users.password" />
-        <label class="form-label" for="form2Example2">密碼</label>
+        <input type="password" class="form-control" />
+        <label class="form-label" >密碼</label>
     </div>
 
     <!-- 2 column grid layout for inline styling -->
@@ -47,7 +47,7 @@
 
 
   <script>
-    import { users } from '@/assets/temp-data.js'
+/*    import { users } from '@/assets/temp-data.js'
     import { ref } from 'vue';
     import { useRouter } from 'vue-router';
 
@@ -74,4 +74,5 @@
     };
   }
 };
+*/
   </script>

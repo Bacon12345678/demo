@@ -3,7 +3,7 @@
               <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best"
                 v-for="product in products" :key="product.id"
               >
-                <a href="#" class="hover text-decoration-none text-reset">
+                <button @click="goToProductDetail(product.id)" style="background-color: white; color: black;">
                   <div class = "collection-img position-relative">
                     <p class = "text-capitalize my-1">{{ product.name }}</p>
                     <small>6 hours ago</small>
@@ -20,22 +20,21 @@
                       <p class = "text-capitalize my-1">{{ product.name }}</p>
                       <span class = "fw-bold">{{ product.price }}</span>
                     </div>
-                    </a>
+                </button>
                   </div>
               </div>
 </template>
 
-<script>
+<script setup>
 import { products } from '../../assets/temp-data';
 
-export default {
-    name:"productspage",
-    data() {
-        return{
-            products,
-        }
-    }
+import { useRouter } from 'vue-router';
 
-}
 
+
+const router = useRouter();
+
+const goToProductDetail = (productId) => {
+  router.push(productId);
+};
 </script>

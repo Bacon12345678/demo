@@ -1,5 +1,5 @@
 <script setup>
-    import sale_item from './sale_section_component/sale_item.vue';
+    import sale_item from './sale_item.vue';
 
 </script>
 

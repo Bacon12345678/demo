@@ -8,7 +8,13 @@
             <li><a class="dropdown-item" href="#">我的商城</a></li>
             <li><a class="dropdown-item" href="#">購買紀錄</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">登出</a></li>
+            <li><button>登出</button>
+             </li>
           </ul>
         </div>
 </template>
+
+<script setup>
+
+
+</script>
