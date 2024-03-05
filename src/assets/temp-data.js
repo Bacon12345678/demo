@@ -35,6 +35,16 @@ export const cartItems = [
         location:'Taipei',
         info:'New. English novel.',
         amount:1,
+    },
+    {
+        id: '789',
+        name: 'Medium',
+        price: '$24.50',
+        imageName: mediumBottle,
+        condition:'New',
+        location:'Taipei',
+        info:'New. English novel.',
+        amount:1,
     }
 ]
 
