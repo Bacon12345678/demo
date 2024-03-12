@@ -4,6 +4,7 @@ import LoginPageVue from '../views/loginpage.vue'
 import ProductDetailVue from '../views/product_detail.vue'
 import ShoppingCartPage from '../views/ShoppingCartPage.vue'
 import TestPage from '../views/TestPage.vue'
+import sale_item_test from '../views/sale_section_component/sale_item_test.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path:'/test',
       name:'testpage',
       component:TestPage
+    },
+    {
+      path:'/ProductPageTest',
+      name:'ProductPageTest',
+      component:sale_item_test
     }
   ]
 })

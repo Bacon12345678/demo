@@ -1,5 +1,6 @@
 // server.js
 
+
 const {Product} = require('./models/product');
 
 const express = require('express');
@@ -20,8 +21,9 @@ const url = `mongodb+srv://a367353933:scN0wuUVJBvnlw3s@rechain.rgxawov.mongodb.n
 const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors({
-  origin: 'http://localhost:5173/'
+  origin: '*'
 }));
+
 
 mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
   .then((db) => {
@@ -51,15 +53,8 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     }
   });
 
-  /*
-  app.get('/api/test',async(req,res) => {
-    await client.connect();
-    const db = client.db('Rechain');
-    const products = await db.collection('product').find({}).toArray();
-    res.send(products);
-  })
-*/
 
+//localhost:3000/api/test
 app.get('/api/test', async (req, res) => {
   try {
     const products = await Product.find({});

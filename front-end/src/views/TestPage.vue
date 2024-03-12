@@ -1,4 +1,5 @@
 <!--test.vue-->
+<!--localhost:5173/test-->
 
 <template>
 <div class="container " v-for="product in products" :key = "product.id">
@@ -22,7 +23,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get("/api/test"); // 添加斜杠表示根路径
+      const response = await axios.get("http://localhost:3000/api/test"); // 添加斜杠表示根路径
       this.products = response.data;
     } catch (error) {
       console.error('Error fetching products:', error);

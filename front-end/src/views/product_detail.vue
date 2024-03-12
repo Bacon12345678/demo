@@ -13,7 +13,6 @@
 </template>
 
 <script setup>
-import { products } from '../assets/temp-data';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -25,4 +24,24 @@ const goback = () => {
     router.back();
 };
 
+</script>
+
+<script>
+import axios from 'axios'; 
+
+export default {
+  data() {
+    return {
+      products: [], // 存储产品数据的数组
+    };
+  },
+  async created() {
+    try {
+      const response = await axios.get("http://localhost:3000/api/test"); // 添加斜杠表示根路径
+      this.products = response.data;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  },
+};
 </script>
