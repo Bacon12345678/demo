@@ -54,26 +54,11 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
   });
 
 
-//localhost:3000/api/test
-app.get('/api/test', async (req, res) => {
+app.get('/api/ProductPageTest/:id', async (req, res) => {
   try {
-    const products = await Product.find({});
-    res.send(products);
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).send('Error fetching products');
-  }
-});
-
-app.get('/api/ProductPageTest/:_id', async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findOne({ _id: ObjectId(productId) });
-    if (product) {
-      res.json(product);
-    } else {
-      res.status(404).json({ message: 'Product not found' });
-    }
+    const { id } = req.params;
+    const product = await Product.findById(id); // 使用 findById 方法查找特定 id 的產品
+    res.status(200).json(product); // 返回找到的產品資料
   } catch (error) {
     console.error('Error fetching product:', error);
     res.status(500).json({ message: 'Internal server error' });

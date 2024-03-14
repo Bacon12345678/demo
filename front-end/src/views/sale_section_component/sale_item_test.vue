@@ -36,8 +36,8 @@ const products = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("http://localhost:3000/api/ProductPageTest");
-    products.value = response.data;
+    const response = await axios.get(`http://localhost:3000/api/ProductPageTest`);
+   products.value = response.data;
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -47,7 +47,7 @@ const router = useRouter();
 
 const goToProductDetail = (_id) => {
 
-  router.push({ name: 'ProductDetail', params: { productId: _id } });
+  router.push({ name: 'product_detail', params: { productId: _id } });
 }
 
 </script>
