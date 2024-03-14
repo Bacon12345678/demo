@@ -20,7 +20,7 @@ const router = createRouter({
       component: LoginPageVue
     },
     {
-      path: '/:productId',
+      path: '/:_id',
       name: 'product_detail',
       component: ProductDetailVue
     },{

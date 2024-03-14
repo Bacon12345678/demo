@@ -1,10 +1,11 @@
+<!--product_detailvue-->
+
 <template>
   <button @click="goback">回上頁</button>
   <div class="product-detail-page">
     <h1>{{ product.name }}</h1>
     <p>{{ product.description }}</p>
     <p>Price: {{ product.price }}</p>
-    <img :src="product.imageName" class="w-25">
   </div>
 
   <div>
@@ -12,36 +13,33 @@
       </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue';
+<script>
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
-const router = useRouter();
-const product = computed(() => products.find(product => product.id === route.params.productId));
-
-const goback = () => {
-    router.back();
-};
-
-</script>
-
-<script>
-import axios from 'axios'; 
-
 export default {
-  data() {
-    return {
-      products: [], // 存储产品数据的数组
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const product = ref(null); // 定義 product 變量
+
+    // 在組件掛載後從路由參數中獲取產品數據
+    onMounted(() => {
+      const productId = route.params.productId;
+      const foundProduct = product.value.find(product => product._id === productId);
+      if (foundProduct) {
+        product.value = foundProduct;
+      } else {
+        // 如果找不到對應的產品，可以導航到一個錯誤頁面或者返回上一頁
+        router.back();
+      }
+    });
+
+    const goback = () => {
+      router.back();
     };
-  },
-  async created() {
-    try {
-      const response = await axios.get("http://localhost:3000/api/test"); // 添加斜杠表示根路径
-      this.products = response.data;
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  },
+
+    return { product, goback };
+  }
 };
 </script>

@@ -1,9 +1,11 @@
+<!--sale_itemvue-->
+
 <template>
     <div class = "collection-list mt-4 row gx-0 gy-3 ">
               <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best"
                 v-for="product in products" :key="product.id"
               >
-                <button @click="goToProductDetail(product.id)" style="background-color: white; color: black;">
+                <button @click="goToProductDetail(product._id)" style="background-color: white; color: black;">
                   <div class = "collection-img position-relative">
                     <p class = "text-capitalize my-1">{{ product.name }}</p>
                     <small>{{product.date}}</small>
@@ -27,30 +29,25 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import axios from 'axios'; 
+import { ref, onMounted } from 'vue';
+
+const products = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/ProductPageTest");
+    products.value = response.data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+});
 
 const router = useRouter();
 
-const goToProductDetail = (productId) => {
-  router.push(productId);
-};
-</script>
+const goToProductDetail = (_id) => {
 
-<script>
-import axios from 'axios'; 
+  router.push({ name: 'ProductDetail', params: { productId: _id } });
+}
 
-export default {
-  data() {
-    return {
-      products: [], // 存储产品数据的数组
-    };
-  },
-  async created() {
-    try {
-      const response = await axios.get("http://localhost:3000/api/test"); // 添加斜杠表示根路径
-      this.products = response.data;
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  },
-};
 </script>

@@ -7,7 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
-
+const {ObjectId} = require('mongodb')
 
 
 
@@ -41,7 +41,7 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
 
 
   // 定义路由
-  app.get('/api/products', async (req, res) => {
+  app.get('/api/ProductPageTest', async (req, res) => {
     console.log('Handling product request...');
     try {
       const products = await Product.find({});
@@ -65,3 +65,17 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
+app.get('/api/ProductPageTest/:_id', async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findOne({ _id: ObjectId(productId) });
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
