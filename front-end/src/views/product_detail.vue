@@ -33,4 +33,9 @@ onMounted(async () => {
   }
   return { product } ;
 });
+
+const goback =() =>{
+  window.history.back();
+}
+
 </script>

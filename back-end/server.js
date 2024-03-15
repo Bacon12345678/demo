@@ -2,6 +2,7 @@
 
 
 const {Product} = require('./models/product');
+const {Users} = require('./models/UserData')
 
 const express = require('express');
 const cors = require('cors');
@@ -62,5 +63,17 @@ app.get('/api/ProductPageTest/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching product:', error);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/api/users',async(req,res)=>{
+  console.log('Handling product request...');
+  try {
+    const users = await Users.find({}).populate('sale_product').populate('cart');
+    res.json(users);
+    console.log(users);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({message:'Internal server error'});
   }
 });
