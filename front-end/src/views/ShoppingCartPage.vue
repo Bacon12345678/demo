@@ -28,7 +28,24 @@
 </template>
 
 <script setup>
-import { cartItems } from '../assets/temp-data.js';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { getuserId } from '@/api/users.js';
 
+const cartItems = ref([]);
+const userId = getuserId();
 
+console.log('User ID:', userId);
+
+// 获取购物车中的产品
+const fetchCartItems = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/cart/${userId}`);
+    cartItems.value = response.data;
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+  }
+};
+
+onMounted(fetchCartItems);
 </script>
