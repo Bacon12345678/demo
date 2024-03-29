@@ -79,8 +79,8 @@
               const responseData = response.data;
               console.log(responseData.user._id);
 
-              document.cookie = `jwtToken=${responseData.token}|userId=${responseData.user._id}; expires=${new Date(Date.now() + 3600 * 1500).toUTCString()}; path=/`;
-              console.log(document.cookie);
+              document.cookie = `jwtToken=${responseData.token}; expires=${new Date(Date.now() + 3600 * 1500).toUTCString()}; path=/`;
+              console.log(responseData);
 
               //message可改成_id之類的(?
               //console.log(responseData.message);

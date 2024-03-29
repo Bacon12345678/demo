@@ -11,6 +11,9 @@ const mongoose = require('mongoose');
 const {ObjectId} = require('mongodb')
 const cookieParser = require('cookie-parser');
 
+const session = require('express-session');
+
+
 
 require('dotenv').config();
 
@@ -33,6 +36,11 @@ app.use(cors({
   origin: '*'
 }));
 
+app.use(session({
+  secret: jwtSecret, 
+  resave: false, 
+  saveUninitialized: false,
+}));
 
 mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
   .then((db) => {
@@ -86,10 +94,11 @@ app.get('/api/users',async(req,res)=>{
   }
 });
 
-app.get('/api/cart', async (req, res) => {
+app.get('/api/cart/:id', async (req, res) => {
   console.log('Handling product request...');
   try {
     // 获取 JWT 令牌
+    
     const jwtToken = req.cookies.jwtToken;
 
     // 如果没有 jwtToken，则说明用户未登录，返回未授权的状态码
@@ -102,7 +111,8 @@ app.get('/api/cart', async (req, res) => {
     const userId = decodedToken.userId;
 
     // 获取购物车数据
-    const user = await Users.findById(userId);
+    const user = await Users.findById(userId).populate('cart');
+
     if (!user) {
       return res.status(404).json({ message: '用户不存在' });
     }
@@ -141,10 +151,25 @@ app.post('/api/auth/login', async (req, res) => {
     }
     // 登入成功
     const token = jwt.sign({ email: email, userId: user._id }, jwtSecret, { expiresIn: '1h' });
-    return res.status(200).json({ message: '登入成功', token: token, user: user });
+    req.session.user = user.toObject();
+    return res.status(200).json({ message: '登入成功', token: token, user: req.session.user });
 
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: '伺服器錯誤' });
+  }
+});
+
+app.get('/check-session', (req, res) => {
+  // Check if session exists
+  console.log(req.session)
+  console.log(req.session.user)
+  if (req.session && req.session.user) {
+    // Session exists, user data is available
+    const userData = req.session.user;
+    res.json({ message: 'Session exists', user: userData });
+  } else {
+    // Session does not exist or user data is not available
+    res.json({ message: 'No session found or user data not available' });
   }
 });
