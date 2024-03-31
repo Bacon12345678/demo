@@ -29,46 +29,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { getuserId } from '@/api/users.js';
-
-const jwtToken = document.cookie
+import { ref,onMounted } from 'vue';
 
 const cartItems = ref([]);
-let userId;
 
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${jwtToken}` // 在標頭中添加 JWT 令牌
-  }
-};
-
-// 使用 Axios 發送 GET 請求並傳遞 JWT 令牌
-axios.get('http://localhost:3000/api/cart', config)
-  .then(response => {
-    console.log('Response:', response.data);
-  })
-  .catch(error => {
-    console.error('Error fetching cart items:', error);
-  });
-
-// 非同步取得 userId
-(async () => {
-  userId = await getuserId();
-  console.log('User ID:', userId);
-  fetchCartItems();
-})();
-
-// 取得購物車中的產品
-const fetchCartItems = async () => {
-  try {
-    const response = await axios.get(`http://localhost:3000/api/cart/${userId}`);
+onMounted(async() =>{
+    axios.get('http://localhost:3000/api/session-data', { withCredentials: true }).then(response => {
     cartItems.value = response.data;
-  } catch (error) {
-    console.error('Error fetching cart items:', error);
-  }
-};
+    console.log(response.data);
+  }).catch(error => {
+    console.error(error);
+  });
+})
+
+
+
+
 
 </script>

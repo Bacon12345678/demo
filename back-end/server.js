@@ -10,8 +10,10 @@ const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const {ObjectId} = require('mongodb')
 const cookieParser = require('cookie-parser');
+ 
 
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 
 
@@ -21,8 +23,6 @@ require('dotenv').config();
 const app = express();
 const PORT = 3000;
 
-
-app.use(cors());
 app.use(express.json());
 const jwt = require('jsonwebtoken');
 app.use(cookieParser());
@@ -32,14 +32,17 @@ const jwtSecret = process.env.JWT_SECRET;
 const url = `mongodb+srv://a367353933:scN0wuUVJBvnlw3s@rechain.rgxawov.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(cors({
-  origin: '*'
-}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  next();
+});
 
-app.use(session({
-  secret: jwtSecret, 
-  resave: false, 
-  saveUninitialized: false,
+app.use(cors({ 
+  origin: 'http://localhost:5173', // 更換成你的前端服務器地址
+  credentials: true // 允許認證資訊
 }));
 
 mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
@@ -56,6 +59,79 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     console.error('Error connecting to the database:', err);
   });
 
+
+  app.use(session({
+    secret: jwtSecret, 
+    store: new MongoStore({mongoUrl:url}),
+    cookie: {domain:'localhost',maxAge:600*1000,secure:false},
+    resave:false,
+    saveUninitialized:true,
+    name:'user'
+  }));
+
+  app.post('/api/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+      // 查找使用者
+      const user = await Users.findOne({ email });
+  
+      // 使用者不存在
+      if (!user) {
+        return res.status(404).json({ message: '帳號不存在' });
+      }
+  
+      // 驗證密碼
+      const isValidPassword = await user.isValidPassword(password);
+  
+      if (!isValidPassword) {
+        return res.status(401).json({ message: '密碼錯誤' });
+      }
+  
+      if (!jwtSecret) {
+        console.error('JWT secret key is missing or empty.');
+        process.exit(1);
+      }
+      // 登入成功
+      const token = jwt.sign({ email: email, userId: user._id }, jwtSecret, { expiresIn: '1h' });
+      const userObject = user.toObject();
+      console.log(JSON.stringify(userObject)); // 打印 userObject 以驗證它的內容
+      req.session.user = userObject;
+
+      req.session.save(function(err) {
+        if (err) {
+          console.error('Session save error: ', err);
+          return res.status(500).json({ message: '伺服器錯誤' });
+        } else {
+          console.log('Session saved: ', JSON.stringify(req.session));
+          return res.status(200).json({ message: '登入成功', token: token, user: req.session.user });
+        }
+        });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: '伺服器錯誤' });
+    }
+  });
+
+  app.get('/api/session-data', async (req, res) => {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({ message: "User not found in session" });
+    }
+    
+    const user = await Users.findById(req.session.user._id);
+  
+    if (!user.cart) {
+      return res.status(400).json({ message: "Cart not found in user session" });
+    }
+  
+  try {
+    const products = await Product.find({_id: {$in: user.cart}})
+    console.log(JSON.stringify(products));
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
   // 定义路由
   app.get('/api/ProductPageTest', async (req, res) => {
@@ -126,50 +202,3 @@ app.get('/api/cart/:id', async (req, res) => {
 });
 
 
-app.post('/api/auth/login', async (req, res) => {
-  const { email, password } = req.body;
-  
-  try {
-    // 查找使用者
-    const user = await Users.findOne({ email });
-
-    // 使用者不存在
-    if (!user) {
-      return res.status(404).json({ message: '帳號不存在' });
-    }
-
-    // 驗證密碼
-    const isValidPassword = await user.isValidPassword(password);
-
-    if (!isValidPassword) {
-      return res.status(401).json({ message: '密碼錯誤' });
-    }
-
-    if (!jwtSecret) {
-      console.error('JWT secret key is missing or empty.');
-      process.exit(1);
-    }
-    // 登入成功
-    const token = jwt.sign({ email: email, userId: user._id }, jwtSecret, { expiresIn: '1h' });
-    req.session.user = user.toObject();
-    return res.status(200).json({ message: '登入成功', token: token, user: req.session.user });
-
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: '伺服器錯誤' });
-  }
-});
-
-app.get('/check-session', (req, res) => {
-  // Check if session exists
-  console.log(req.session)
-  console.log(req.session.user)
-  if (req.session && req.session.user) {
-    // Session exists, user data is available
-    const userData = req.session.user;
-    res.json({ message: 'Session exists', user: userData });
-  } else {
-    // Session does not exist or user data is not available
-    res.json({ message: 'No session found or user data not available' });
-  }
-});

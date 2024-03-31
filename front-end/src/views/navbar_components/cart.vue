@@ -1,6 +1,6 @@
 <template>
 
-    <router-link to="/shoppingcart">
+    <router-link :to="{ name: 'shoppingcart' }">
       <div>
       <img src="@/assets/image/cart.svg" alt="cart" width="22" height="22" class="rounded-circle">
       <span class="badge m-2 rounded-pill badge-notification bg-danger"
@@ -13,7 +13,6 @@
 
 <script setup>
 import { cartItems } from '@/assets/temp-data.js';
-
 
 
 

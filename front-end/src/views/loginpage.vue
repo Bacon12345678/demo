@@ -68,13 +68,17 @@
 
         if (valid) {
           try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', {
-              email: form.value.email,
-              password: form.value.password
-            });
+            const response = await axios.post(
+              'http://localhost:3000/api/auth/login', 
+              { 
+                email: form.value.email, 
+                password: form.value.password 
+              }, 
+              { 
+                withCredentials: true 
+              }
+            );
             
-              //console.log('收到的数据:', response.data);
-                // 将JWT令牌存储在cookie中，设置过期时间为1小时
               
               const responseData = response.data;
               console.log(responseData.user._id);
@@ -82,8 +86,6 @@
               document.cookie = `jwtToken=${responseData.token}; expires=${new Date(Date.now() + 3600 * 1500).toUTCString()}; path=/`;
               console.log(responseData);
 
-              //message可改成_id之類的(?
-              //console.log(responseData.message);
               router.replace({ path: '/' });
           } catch (error) {
             // 处理请求失败的情况
