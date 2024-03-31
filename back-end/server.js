@@ -133,6 +133,16 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
   }
 });
 
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+      if (err) {
+          return res.status(500).send({ error: 'Failed to destroy session' });
+      }
+      res.clearCookie('user', { path: '/' });
+      res.status(200).send({ success: 'Logout successful' });
+  });
+});
+
   // 定义路由
   app.get('/api/ProductPageTest', async (req, res) => {
     console.log('Handling product request...');

@@ -78,8 +78,6 @@
                 withCredentials: true 
               }
             );
-            
-              
               const responseData = response.data;
               console.log(responseData.user._id);
 
