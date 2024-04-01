@@ -18,7 +18,7 @@
           {{ product.amount }}
         </div>
         <div class="col">
-          <button @click="removeItem(product.id)">移除</button>
+          <button @click="removeItem(product._id)">移除</button>
         </div>
       </div>
       <hr />
@@ -31,20 +31,38 @@
 <script setup>
 import axios from 'axios';
 import { ref,onMounted } from 'vue';
+import { users } from '../assets/temp-data';
 
 const cartItems = ref([]);
 
-onMounted(async() =>{
-    axios.get('http://localhost:3000/api/session-data', { withCredentials: true }).then(response => {
-    cartItems.value = response.data;
-    console.log(response.data);
-  }).catch(error => {
-    console.error(error);
-  });
-})
 
+const fetchCartItems = async () => {
+    try {
+        const response = await axios.get('http://localhost:3000/api/session-data', { withCredentials: true });
+        cartItems.value = response.data;
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}
 
+onMounted(fetchCartItems);
 
+  const removeItem = async (productId ) => {
+    console.log('Product ID:',productId);
+  try {
+    const response = await axios.post('http://localhost:3000/api/carts/remove',
+      { productId },
+      { withCredentials: true }
+    );
+    // 处理响应，例如打印消息、显示通知、刷新购物车等。
+    console.log(response.data.message);
 
+    await fetchCartItems();
+    console.log(users.cart)
+  } catch (error) {
+    console.error(`Error when removing product from cart: `, error);
+  }
+};
 
 </script>

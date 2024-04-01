@@ -62,7 +62,9 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
 
   app.use(session({
     secret: jwtSecret, 
-    store: new MongoStore({mongoUrl:url}),
+    store: new MongoStore({mongoUrl:url,
+    dbName:'Recahin'
+    }),
     cookie: {domain:'localhost',maxAge:600*1000,secure:false},
     resave:false,
     saveUninitialized:true,
@@ -132,6 +134,33 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     res.status(500).json({ message: error.message });
   }
 });
+
+app.post('/api/carts/add', async (req, res) => {
+  const {productId} = req.body;
+
+  try {
+    const user = await Users.findByIdAndUpdate(req.session.user._id, { $push: { cart: productId } },{new:true});
+    res.status(200).send({ message: 'Product added to cart successfully.' });
+  } catch (error) {
+    // handle error
+    res.status(500).send({ message: 'Error when adding product to cart: ' + error.message });
+  }
+});
+
+app.post('/api/carts/remove', async (req, res) => {
+  const { productId } = req.body;
+
+  console.log(productId)
+  
+  try {
+    const user = await Users.findByIdAndUpdate(req.session.user._id, { $pull: { cart: productId } });
+    res.status(200).send({ success: true, message: 'Product removed from cart successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error when removing product from cart: ' + error.message });
+  }
+});
+
 
 app.post('/logout', (req, res) => {
   req.session.destroy(err => {

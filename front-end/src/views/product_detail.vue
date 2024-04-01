@@ -8,7 +8,7 @@
     <p>Price: {{ product.price }}</p>
   </div>
   <div>
-    <button class="add-to-cart">add to cart</button>
+    <button class="add-to-cart" @click="addToCart">add to cart</button>
       </div>
 </template>
 
@@ -38,4 +38,17 @@ const goback =() =>{
   window.history.back();
 }
 
+const addToCart = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/carts/add',
+      { productId: product.value._id },
+      { withCredentials: true }
+    );
+
+    // 你可以在此处理响应，例如打印消息、显示通知、重定向等。
+    console.log(response.data.message);
+  } catch (error) {
+    console.error(`Error when adding product to cart: `, error);
+  }
+};
 </script>
