@@ -115,6 +115,29 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     }
   });
 
+  const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.sendStatus(401);
+  
+    const parts = authHeader.split(' ');
+  
+    if (parts.length !== 2 || parts[0] !== 'Bearer') return res.sendStatus(401);
+  
+    const token = parts[1];
+  
+    jwt.verify(token, jwtSecret, (err, user) => {
+      if (err) return res.sendStatus(403);
+  
+      req.user = user;
+      next();
+    });
+  }
+  
+  // 验证端点
+  app.get('/api/auth/verify', verifyToken, (req, res) => {
+    res.sendStatus(200);
+  });
+
   app.get('/api/session-data', async (req, res) => {
     if (!req.session.user || !req.session.user._id) {
       return res.status(401).json({ message: "User not found in session" });
