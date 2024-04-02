@@ -5,13 +5,12 @@
 
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
           <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="#">個人資料</a></li>
+            <a href="javascript:;" @click="$router.push('/userinfo')"><li>個人資料</li></a>
             <li><a class="dropdown-item" href="#">我的商城</a></li>
             <li><a class="dropdown-item" href="#">購買紀錄</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a href="javascript:;" @click="logout">登出</a></li>
           </ul>
-
           </a>          
         </div>
     </template>
@@ -36,6 +35,7 @@ const loggedIn = ref(); // 创建一个响应式引用来存储登录状态
 
 onMounted(async () => {
   loggedIn.value = await isLoggedIn(); // 在组件挂载时检查登录状态
+  router.replace('/');
 });
 
 
@@ -52,6 +52,7 @@ const logout = async () => {
       document.cookie = 'jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       // 重定向到登录页
       router.push('/');
+      window.location.reload();
     } else {
       console.error(`Logout failed with status code: ${response.status}`);
     }

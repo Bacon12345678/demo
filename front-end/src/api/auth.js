@@ -15,10 +15,12 @@ export const isLoggedIn = async () => {
     
       // 如果服务器返回了成功的响应，那么用户已登录
       return response.status === 200;
+      
     } catch (error) {
       console.error(`Error verifying token: `, error);
       
       return false;
     }
+    
   };
   

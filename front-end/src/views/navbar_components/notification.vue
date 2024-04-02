@@ -8,7 +8,7 @@
             style=" position: absolute;top: 0px; right: 10px;display: block; font-size: 10px;">9</span>
           </a> 
           <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="#">個人資料</a></li>
+            <a href="javascript:;" @click="$router.push('/test')"><li>個人資料</li></a>
             <li><a class="dropdown-item" href="#">我的商城</a></li>
             <li><a class="dropdown-item" href="#">購買紀錄</a></li>
             <li><hr class="dropdown-divider"></li>

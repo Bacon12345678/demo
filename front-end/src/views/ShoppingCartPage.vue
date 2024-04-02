@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="text-center m-3">購物車</h3>
+    <h3 class="text-center m-3">個人資料</h3>
     <hr />
 
     <div class="container" v-for="product in cartItems" :key="product.id">
@@ -31,14 +31,14 @@
 <script setup>
 import axios from 'axios';
 import { ref,onMounted } from 'vue';
-import { users } from '../assets/temp-data';
+
 
 const cartItems = ref([]);
 
 
 const fetchCartItems = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/session-data', { withCredentials: true });
+        const response = await axios.get('http://localhost:3000/api/user-cart', { withCredentials: true });
         cartItems.value = response.data;
         console.log(response.data);
     } catch (error) {
@@ -57,9 +57,7 @@ onMounted(fetchCartItems);
     );
     // 处理响应，例如打印消息、显示通知、刷新购物车等。
     console.log(response.data.message);
-
     await fetchCartItems();
-    console.log(users.cart)
   } catch (error) {
     console.error(`Error when removing product from cart: `, error);
   }

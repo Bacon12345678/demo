@@ -138,7 +138,7 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     res.sendStatus(200);
   });
 
-  app.get('/api/session-data', async (req, res) => {
+  app.get('/api/user-cart', async (req, res) => {
     if (!req.session.user || !req.session.user._id) {
       return res.status(401).json({ message: "User not found in session" });
     }
@@ -153,6 +153,19 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     const products = await Product.find({_id: {$in: user.cart}})
     console.log(JSON.stringify(products));
     res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get('/api/user-info', async (req, res) => {
+  if (!req.session.user || !req.session.user._id) {
+    return res.status(401).json({ message: "User not found in session" });
+  }
+  try{
+  const user = await Users.findById(req.session.user._id);
+  console.log(JSON.stringify(user));
+  res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
