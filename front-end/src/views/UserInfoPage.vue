@@ -53,7 +53,7 @@
     </Suspense>
   </template>
   
-  <script setup>
+<script setup>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
   
@@ -81,3 +81,47 @@
   }
   
   </script>
+
+<style>
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #05d686
+}
+
+.profile-button {
+    background: #05d686;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #05d686;
+}
+
+.profile-button:focus {
+    background: #05d686;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #05d686;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #05d686;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #05d686;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #05d686;
+}
+</style>
