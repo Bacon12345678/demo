@@ -1,36 +1,44 @@
 <!--sale_itemvue-->
-
 <template>
-    <div class = "collection-list mt-4 row gx-0 gy-3 ">
-              <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best"
-                v-for="product in products" :key="product.id"
-              >
-                <button @click="goToProductDetail(product._id)" style="background-color: white; color: black;">
-                  <div class = "collection-img position-relative">
-                    <p class = "text-capitalize my-1">{{ product.name }}</p>
-                    <small>{{product.date}}</small>
-                      <img :src="product.imageName" class = "w-100">
-                  </div>
-                    <div class = "text-center">
-                      <div class = "rating mt-3">
-                          <span class = "text-primary"><i class = "fas fa-star"></i></span>
-                          <span class = "text-primary"><i class = "fas fa-star"></i></span>
-                          <span class = "text-primary"><i class = "fas fa-star"></i></span>
-                          <span class = "text-primary"><i class = "fas fa-star"></i></span>
-                          <span class = "text-primary"><i class = "fas fa-star"></i></span>
-                      </div>
-                      <p class = "text-capitalize my-1">{{ product.info }}</p>
-                      <span class = "fw-bold">{{ product.price }}</span>
+  <template v-if="isNotFound">
+    <h3  class="mt-5 text-center">查無資料</h3>
+  </template>
+
+
+  <template v-else>
+    <div class = "title text-center">
+                <h2 class = "position-relative d-inline-block">所有書籍</h2>
+    </div>
+      <div class = "collection-list mt-4 row gx-0 gy-3 ">
+                <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best"
+                  v-for="product in productList" :key="product.id"
+                >
+                  <button @click="goToProductDetail(product._id)" style="background-color: white; color: black;">
+                    <div class = "collection-img position-relative">
+                      <p class = "text-capitalize my-1">{{ product.name }}</p>
+                      <small>{{product.date}}</small>
+                        <img :src="'./src/assets/image/' + product.imageName" class = "w-100">
                     </div>
-                </button>
-                  </div>
-              </div>
+                      <div clss = "text-center">
+                        
+                        <p class = "text-capitalize my-1">{{ product.info }}</p>
+                        <span class = "fw-bold">{{ product.price }}</span>
+                      </div>
+                  </button>
+                    </div>
+                </div>
+  </template>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import axios from 'axios'; 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
+import { useStore } from 'vuex';
+
+
+const store = useStore();
+const searchResults = computed(() => store.state.searchResults);
 
 const products = ref([]);
 
@@ -49,5 +57,13 @@ const goToProductDetail = (_id) => {
 
   router.push({ name: 'product_detail', params: { productId: _id } });
 }
+
+const productList = computed(() => {
+  return searchResults.value.length > 0 ? searchResults.value : products.value;
+});
+
+const isNotFound = computed(() => {
+  return searchResults.value.length === 0 && products.value.length==0;
+});
 
 </script>

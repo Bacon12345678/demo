@@ -1,11 +1,11 @@
-import basilBottle from '../assets/product-img/basil-bottle.jpg';
-import lemonBottle from '../assets/product-img/lemon-bottle.jpg';
-import garlicBottle from '../assets/product-img/garlic-bottle.jpg';
-import rosemaryBottle from '../assets/product-img/rosemary-bottle.jpg';
-import chiliBottle from '../assets/product-img/chili-bottle.jpg';
-import delicateBottle from '../assets/product-img/delicate-bottle.jpg';
-import mediumBottle from '../assets/product-img/medium-bottle.jpg';
-import boldBottle from '../assets/product-img/bold-bottle.jpg';
+import basilBottle from '../assets/image/1984.jpg';
+import lemonBottle from '../assets/image/Dune.jpg';
+import garlicBottle from '../assets/image/knowledge.jpg';
+import rosemaryBottle from '../assets/image/law.jpg';
+import chiliBottle from '../assets/image/TOEFL.jpg';
+import delicateBottle from '../assets/image/thelastlecture.jpg';
+import mediumBottle from '../assets/image/sucks.jpg';
+import boldBottle from '../assets/image/quiet.jpg';
 
 export const cartItems = [
     {

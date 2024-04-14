@@ -4,6 +4,7 @@
   <button @click="goback">回上頁</button>
   <div class="product-detail-page">
     <h1>{{ product.name }}</h1>
+    <img :src="'./src/assets/image/' + product.imageName" class="w-25">
     <p>{{ product.info }}</p>
     <p>Price: {{ product.price }}</p>
   </div>
@@ -44,8 +45,7 @@ const addToCart = async () => {
       { productId: product.value._id },
       { withCredentials: true }
     );
-
-    // 你可以在此处理响应，例如打印消息、显示通知、重定向等。
+    alert('Product added to cart successfully!');
     console.log(response.data.message);
   } catch (error) {
     console.error(`Error when adding product to cart: `, error);

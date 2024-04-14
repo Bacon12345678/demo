@@ -5,11 +5,13 @@ const {Product} = require('./models/product');
 const {Users} = require('./models/UserData')
 
 const express = require('express');
+const multer = require('multer');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const {ObjectId} = require('mongodb')
 const cookieParser = require('cookie-parser');
+const path = require('path');
  
 
 const session = require('express-session');
@@ -44,6 +46,17 @@ app.use(cors({
   origin: 'http://localhost:5173', // 更換成你的前端服務器地址
   credentials: true // 允許認證資訊
 }));
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, path.join(__dirname, '../../demo/front-end/src/assets/image')); // 使用絕對路徑
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.' + file.mimetype.split('/')[1]); // 圖片的檔名
+  }
+});
+
+const upload = multer({ storage: storage });
 
 mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
   .then((db) => {
@@ -176,7 +189,7 @@ app.post('/api/carts/add', async (req, res) => {
 
   try {
     const user = await Users.findByIdAndUpdate(req.session.user._id, { $push: { cart: productId } },{new:true});
-    res.status(200).send({ message: 'Product added to cart successfully.' });
+    res.status(200).json({ message: 'Product added to cart successfully.' });
   } catch (error) {
     // handle error
     res.status(500).send({ message: 'Error when adding product to cart: ' + error.message });
@@ -206,6 +219,39 @@ app.post('/logout', (req, res) => {
       res.clearCookie('user', { path: '/' });
       res.status(200).send({ success: 'Logout successful' });
   });
+});
+
+app.post('/api/auction', upload.single('productImage'),async (req, res) => {
+  if (!req.session.user || !req.session.user._id) {
+    return res.status(401).json({ message: "User not found in session" });
+  }
+
+  try {
+    const user = await Users.findById(req.session.user._id);
+
+    console.log(req.file);
+
+    // 创建新的 product 文档
+    const newProduct = new Product({
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      price: req.body.price,
+      condition: req.body.condition,
+      info: req.body.info,
+      inventory: req.body.inventory,
+      location: req.body.location,
+      imageName: req.file.filename
+    });
+    // 保存到数据库
+    const savedProduct = await newProduct.save();
+
+    user.sale_product.push(savedProduct._id);
+    await user.save();
+    
+    res.json({ product: savedProduct, message: 'Product created successfully!' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
   // 定义路由
@@ -276,4 +322,14 @@ app.get('/api/cart/:id', async (req, res) => {
   }
 });
 
-
+app.post('/api/search', async(req, res)=>{
+  try{
+    const keyword = req.body.keyword;
+    const results = await Product.find({ name: new RegExp(keyword, 'i') });
+    res.json(results);
+    console.log(results);
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      res.status(500).json({message:'Internal server error'});
+    }
+});
