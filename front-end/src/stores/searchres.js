@@ -4,7 +4,7 @@ import router from '../router';
 
 export default createStore({
   state: {
-    searchResults: []
+    searchResults: [],
   },
   mutations: {
     setSearchResults(state, results) {
@@ -14,8 +14,11 @@ export default createStore({
   actions: {
     async searchProduct({ commit }, keyword) {
       const response = await axios.post('http://localhost:3000/api/search', { keyword });
-      commit('setSearchResults', response.data);
+      commit('setSearchResults', response.data);   
       router.replace('/');
+      if (response.data.length === 0) { 
+        alert('查無產品'); 
+      }
     }
   }
 });

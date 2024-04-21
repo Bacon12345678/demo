@@ -8,8 +8,8 @@
         <div class="col">
           {{ product.name }}
         </div>
-        <div class="col">
-          <img :src="product.imageName" class="img-fluid mb-3" style="max-width: 50%; height: auto;" />
+        <div class="col thumbnail">
+            <img :src="'./src/assets/image/' + product.imageName" style = "width: 30%;">
         </div>
         <div class="col">
           {{ product.price }}
@@ -24,7 +24,7 @@
       <hr />
     </div>
 
-    <button class="float-end m-5" @click="checkout">結帳</button>
+    <router-link :to="{ name: 'checkoutpage' }"><button class="float-end m-5">結帳</button></router-link>
   </div>
 </template>
 

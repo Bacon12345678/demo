@@ -155,7 +155,6 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     if (!req.session.user || !req.session.user._id) {
       return res.status(401).json({ message: "User not found in session" });
     }
-    
     const user = await Users.findById(req.session.user._id);
   
     if (!user.cart) {

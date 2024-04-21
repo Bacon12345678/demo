@@ -33,12 +33,13 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import axios from 'axios'; 
-import { ref, onMounted,computed } from 'vue';
+import { ref, onMounted,computed , watch} from 'vue';
 import { useStore } from 'vuex';
 
 
 const store = useStore();
 const searchResults = computed(() => store.state.searchResults);
+const hasSearched = ref(false);
 
 const products = ref([]);
 
@@ -46,6 +47,11 @@ onMounted(async () => {
   try {
     const response = await axios.get(`http://localhost:3000/api/ProductPageTest`);
    products.value = response.data;
+   console.log('searchResults.value.length:',searchResults.value.length)
+  console.log('searchResults.value:',searchResults.value)
+  console.log('products.value.length:',products.value.length)
+  console.log('searchResults.value.length:',searchResults.value.length)
+
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -62,8 +68,5 @@ const productList = computed(() => {
   return searchResults.value.length > 0 ? searchResults.value : products.value;
 });
 
-const isNotFound = computed(() => {
-  return searchResults.value.length === 0 && products.value.length==0;
-});
 
 </script>

@@ -6,6 +6,7 @@ import ShoppingCartPage from '../views/ShoppingCartPage.vue'
 import sale_item_test from '../views/sale_section_component/sale_item.vue'
 import Userinfopage from '../views/UserInfoPage.vue'
 import sellpage from '../views/sellpage.vue'
+import Checkout_page from '../views/checkout_page.vue'
 
 
 
@@ -47,7 +48,11 @@ const router = createRouter({
       path:'/sell',
       name: 'sellpage',
       component: sellpage
-    },
+    },{
+      path:'/checkoutbill',
+      name: 'checkoutpage',
+      component: Checkout_page
+    }
 
   ]
 })

@@ -81,7 +81,7 @@
               const responseData = response.data;
               console.log(responseData.user._id);
 
-              document.cookie = `jwtToken=${responseData.token}; expires=${new Date(Date.now() + 3600 * 1500).toUTCString()}; path=/`;
+              document.cookie = `jwtToken=${responseData.token}; expires=${new Date(Date.now() + 3600 * 6000).toUTCString()}; path=/`;
               console.log(responseData);
 
               router.replace({ path: '/' });

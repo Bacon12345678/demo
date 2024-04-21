@@ -1,16 +1,14 @@
 <template>
-  <div @click="checkLoginStatus" class="hover-effect">
-      <div>
-      <img src="@/assets/image/cart.svg" alt="cart" width="22" height="22" class="rounded-circle">
-      <span class="badge m-2 rounded-pill badge-notification bg-danger"
-            style=" position: absolute;top: 7px;display: block; font-size: 10px;">{{cartItems.length}}</span>
-      </div>
-  </div>
+    <div class="text-end mx-5">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" 
+          style="position: relative;">
+          <button class="btn btn-primary profile-button mr-3" type="button" @click="checkLoginStatus">拍賣</button>
+            <i class="fas fa-envelope fa-2x" ></i>
+          </a> 
+        </div>
 </template>
 
-
 <script setup>
-import { cartItems } from '@/assets/temp-data.js';
 import { useRouter } from 'vue-router';  // 假设你使用的是axios库进行http请求
 import {isLoggedIn} from '@/api/auth.js'
 import { ElMessageBox } from 'element-plus';
@@ -33,6 +31,4 @@ const checkLoginStatus = async () =>{
     router.push({ name: 'shoppingcart' }); // 已登入，導航到購物車頁面
   }
 }
-
-
 </script>

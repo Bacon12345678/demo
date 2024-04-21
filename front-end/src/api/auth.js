@@ -1,11 +1,12 @@
 import axios from "axios";
 
+
 export const isLoggedIn = async () => {
     // 从 cookie 中提取 token
-    const token = document.cookie
+    const cookie = document.cookie
       .split('; ')
       .find(row => row.startsWith('jwtToken'))
-      .split('=')[1];
+      const token = cookie ? cookie.split('=')[1] : null;
     
     try {
       // 发起请求到你的服务器端验证端点
@@ -17,10 +18,8 @@ export const isLoggedIn = async () => {
       return response.status === 200;
       
     } catch (error) {
-      console.error(`Error verifying token: `, error);
-      
+      console.error(`Error verifying token: `, error); 
       return false;
     }
-    
   };
   

@@ -4,7 +4,7 @@ import Shop_sale from './navbar_components/shop_sale.vue';
 import search_bar from './navbar_components/search_bar.vue';
 import carbon_point from './navbar_components/carbon_point.vue';
 import cart from './navbar_components/cart.vue';
-import notification from './navbar_components/notification.vue';
+import auction from './navbar_components/auction.vue';
 import user_profile from './navbar_components/user_profile.vue';
 
 
@@ -29,7 +29,7 @@ import user_profile from './navbar_components/user_profile.vue';
             <search_bar />
             <carbon_point />
             <cart />
-            <notification />
+            <auction />
             <user_profile />
         </div>
       </div>

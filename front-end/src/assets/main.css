@@ -21,12 +21,6 @@ button {
   padding: 16px;
 }
 
-h1 {
-  border-bottom: 1px solid black;
-  margin: 0;
-  margin-top: 16px;
-  padding: 16px;
-}
 
 .total-price {
   padding: 16px;
@@ -203,4 +197,29 @@ h1 {
 .remove-button {
   flex: 1;
   margin: auto;
+}
+
+button {
+  background: #05d686;
+  box-shadow: none;
+  border: none
+}
+
+button:hover {
+  background: #05d686;
+}
+
+button:focus {
+  background: #05d686;
+  box-shadow: none
+}
+
+button:active {
+  background: #05d686;
+  box-shadow: none
+}
+
+.hover-effect:hover {
+  background-color: #f8f9fa;  /* 或者你想要的任何其他颜色 */
+  cursor: pointer;
 }
