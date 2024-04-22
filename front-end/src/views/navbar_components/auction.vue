@@ -28,7 +28,7 @@ const checkLoginStatus = async () =>{
           }
     });
   }else {
-    router.push({ name: 'shoppingcart' }); // 已登入，導航到購物車頁面
+    router.push({ name: 'sellpage' }); // 已登入，導航到購物車頁面
   }
 }
 </script>

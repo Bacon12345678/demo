@@ -7,6 +7,8 @@ import sale_item_test from '../views/sale_section_component/sale_item.vue'
 import Userinfopage from '../views/UserInfoPage.vue'
 import sellpage from '../views/sellpage.vue'
 import Checkout_page from '../views/checkout_page.vue'
+import Order_page from '../views/Order.vue'
+
 
 
 
@@ -52,6 +54,10 @@ const router = createRouter({
       path:'/checkoutbill',
       name: 'checkoutpage',
       component: Checkout_page
+    },{
+      path:'/orders',
+      name:'orderpage',
+      component: Order_page
     }
 
   ]

@@ -223,3 +223,14 @@ button:active {
   background-color: #f8f9fa;  /* 或者你想要的任何其他颜色 */
   cursor: pointer;
 }
+
+button:disabled {
+  color: grey; 
+  background-color: lightgrey; 
+}
+
+button:disabled:hover {
+  color: grey; 
+  background-color: lightgrey; 
+  cursor: default;
+}

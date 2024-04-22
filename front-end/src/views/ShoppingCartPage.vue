@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="text-center m-3">個人資料</h3>
+    <h3 class="text-center m-3">購物車</h3>
     <hr />
 
     <div class="container" v-for="product in cartItems" :key="product.id">
@@ -24,7 +24,7 @@
       <hr />
     </div>
 
-    <router-link :to="{ name: 'checkoutpage' }"><button class="float-end m-5">結帳</button></router-link>
+    <router-link :to="{ name: 'checkoutpage' }"><button class="float-end m-5" :disabled="!cartItems.length">結帳</button></router-link>
   </div>
 </template>
 

@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 const {ObjectId} = require('mongodb')
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const bodyParser = require('body-parser');
+
  
 
 const session = require('express-session');
@@ -28,6 +30,7 @@ const PORT = 3000;
 app.use(express.json());
 const jwt = require('jsonwebtoken');
 app.use(cookieParser());
+app.use(bodyParser.json());
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -239,7 +242,8 @@ app.post('/api/auction', upload.single('productImage'),async (req, res) => {
       info: req.body.info,
       inventory: req.body.inventory,
       location: req.body.location,
-      imageName: req.file.filename
+      imageName: req.file.filename,
+      available: true
     });
     // 保存到数据库
     const savedProduct = await newProduct.save();
@@ -257,7 +261,7 @@ app.post('/api/auction', upload.single('productImage'),async (req, res) => {
   app.get('/api/ProductPageTest', async (req, res) => {
     console.log('Handling product request...');
     try {
-      const products = await Product.find({});
+      const products = await Product.find({ available: true });
       console.log('Found products:', products);
       res.json(products);
     } catch (err) {
@@ -331,4 +335,49 @@ app.post('/api/search', async(req, res)=>{
       console.error('Error fetching products:', err);
       res.status(500).json({message:'Internal server error'});
     }
+});
+
+app.post('/api/orders/add', async (req, res) => {
+
+  const {productId} = req.body;
+
+  try {
+    const user = await Users.findByIdAndUpdate(req.session.user._id, { $push: { order: productId } },{new:true});
+    res.status(200).json({ message: 'Product added to cart successfully.' });
+  } catch (error) {
+    // handle error
+    res.status(500).send({ message: 'Error when adding product to cart: ' + error.message });
+  }
+});
+
+app.post('/api/orders', async (req,res) => {
+  if (!req.session.user || !req.session.user._id) {
+    return res.status(401).json({ message: "User not found in session" });
+  }
+  const user = await Users.findById(req.session.user._id);
+
+  if (!user.order) {
+    return res.status(400).json({ message: "Cart not found in user session" });
+  }
+try {
+  const products = await Product.find({_id: {$in: user.order}})
+  console.log(JSON.stringify(products));
+  res.status(200).json(products);
+} catch (error) {
+  res.status(500).json({ message: error.message });
+}
+})
+
+app.put('/api/unavailable/:id', async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, { available: false });
+    if (!product) {
+        res.status(404).send('Product not found');
+    } else {
+        res.status(200).send('Product updated');
+    }
+} catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).send('Error updating product');
+}
 });

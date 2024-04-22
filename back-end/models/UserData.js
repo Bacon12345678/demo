@@ -9,7 +9,8 @@ const UserSchema = new mongoose.Schema({
   password: String,
   phone: String,
   sale_product: [{ type: mongoose.Schema.Types.ObjectId, required: true, unique: true }], // 連接到產品模型的銷售產品
-  cart: [{ type: mongoose.Schema.Types.ObjectId }] // 連接到產品模型的購物車
+  cart: [{ type: mongoose.Schema.Types.ObjectId }],
+  order: [{ type: mongoose.Schema.Types.ObjectId }]
 }, {collection:'User'}
 );
 

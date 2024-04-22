@@ -31,17 +31,12 @@
 <script setup>
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
-import {isLoggedIn} from '@/api/auth.js'
+
 
 const router = useRouter();
 
-const loggedIn = ref(); // 创建一个响应式引用来存储登录状态
 
-onMounted(async () => {
-  loggedIn.value = await isLoggedIn(); // 在组件挂载时检查登录状态
-  router.replace('/login');
-});
+
 
 
 const auction = async () => {

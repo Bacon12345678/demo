@@ -29,7 +29,7 @@
 
 <div class="container">
     <div class="row">
-        <el-form :model="form" :rules="rules" class="col m-5">
+        <el-form :model="form" :rules="rules" ref="myForm" class="col m-5">
             <h3>選擇付款方式</h3>
             <el-radio-group v-model="form.payment">
                 <el-radio>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <button type="primary">確認下訂</button>
+        <button type="primary" @click="Order">確認下訂</button>
     </div>
 </div>
 </template>
@@ -74,7 +74,6 @@ const fetchCartItems = async () => {
         const response = await axios.get('http://localhost:3000/api/user-cart', { withCredentials: true });
         cartItems.value = response.data;
         console.log(response.data);
-        TotalPrice();
     } catch (error) {
         console.error(error);
     }
@@ -87,5 +86,25 @@ const TotalPrice = computed(() => {
 });
 
 onMounted(fetchCartItems);  
+
+const Order = async () => {
+    const valid = await form.value.$refs['myForm'].validate();
+    if (!valid) return;
+    for (const product of cartItems.value) {
+        try {
+            await axios.post('http://localhost:3000/api/orders/add',
+                { productId: product._id }, // 修改这里
+                { withCredentials: true }
+            );
+            await axios.put(`http://localhost:3000/api/unavailable/${product._id}`, { available: false }, { withCredentials: true });
+            await axios.post('http://localhost:3000/api/carts/remove',
+            { productId: product._id },
+            { withCredentials: true }
+    );
+        } catch (error) {
+            console.error(`Error when adding product to cart: `, error);
+        }
+    }
+};
 
 </script>
