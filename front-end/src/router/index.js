@@ -49,15 +49,18 @@ const router = createRouter({
     },{
       path:'/sell',
       name: 'sellpage',
-      component: sellpage
+      component: sellpage,
+      props: true
     },{
       path:'/checkoutbill',
       name: 'checkoutpage',
-      component: Checkout_page
+      component: Checkout_page,
+      props: true
     },{
       path:'/orders',
       name:'orderpage',
-      component: Order_page
+      component: Order_page,
+      props: true
     }
 
   ]

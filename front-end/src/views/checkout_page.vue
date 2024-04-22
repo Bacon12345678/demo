@@ -29,7 +29,7 @@
 
 <div class="container">
     <div class="row">
-        <el-form :model="form" :rules="rules" ref="myForm" class="col m-5">
+        <el-form :model="form" :rules="rules"  class="col m-5">
             <h3>選擇付款方式</h3>
             <el-radio-group v-model="form.payment">
                 <el-radio>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <button type="primary" @click="Order">確認下訂</button>
+        <button type="primary" @click="handleSubmit">確認下訂</button>
     </div>
 </div>
 </template>
@@ -54,8 +54,10 @@
 <script setup>
 import axios from 'axios';
 import { ref,onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 
+const router = useRouter();
 const cartItems = ref([]);
 
 const form = ref({
@@ -87,13 +89,15 @@ const TotalPrice = computed(() => {
 
 onMounted(fetchCartItems);  
 
+const handleSubmit = async () => {
+  await Order();
+};
+
 const Order = async () => {
-    const valid = await form.value.$refs['myForm'].validate();
-    if (!valid) return;
     for (const product of cartItems.value) {
         try {
             await axios.post('http://localhost:3000/api/orders/add',
-                { productId: product._id }, // 修改这里
+                { productId: product._id }, 
                 { withCredentials: true }
             );
             await axios.put(`http://localhost:3000/api/unavailable/${product._id}`, { available: false }, { withCredentials: true });
@@ -105,6 +109,8 @@ const Order = async () => {
             console.error(`Error when adding product to cart: `, error);
         }
     }
+
+    router.push({ name: 'orderpage' });
 };
 
 </script>

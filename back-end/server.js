@@ -328,7 +328,7 @@ app.get('/api/cart/:id', async (req, res) => {
 app.post('/api/search', async(req, res)=>{
   try{
     const keyword = req.body.keyword;
-    const results = await Product.find({ name: new RegExp(keyword, 'i') });
+    const results = await Product.find({ name: new RegExp(keyword, 'i') },{ available: true });
     res.json(results);
     console.log(results);
     } catch (err) {
@@ -350,7 +350,7 @@ app.post('/api/orders/add', async (req, res) => {
   }
 });
 
-app.post('/api/orders', async (req,res) => {
+app.get('/api/orders', async (req,res) => {
   if (!req.session.user || !req.session.user._id) {
     return res.status(401).json({ message: "User not found in session" });
   }
@@ -366,18 +366,34 @@ try {
 } catch (error) {
   res.status(500).json({ message: error.message });
 }
-})
+});
 
-app.put('/api/unavailable/:id', async (req, res) => {
+app.put('/api/available/:id', async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, { available: false });
+    const { available } = req.body; // Extract the 'available' field from the request body
+    const product = await Product.findByIdAndUpdate(req.params.id, { available });
+
     if (!product) {
         res.status(404).send('Product not found');
     } else {
         res.status(200).send('Product updated');
     }
-} catch (error) {
+  } catch (error) {
     console.error('Error updating product:', error);
     res.status(500).send('Error updating product');
-}
+  }
+});
+
+app.post('/api/orders/remove', async (req, res) => {
+  const { productId } = req.body;
+
+  console.log(productId)
+  
+  try {
+    const user = await Users.findByIdAndUpdate(req.session.user._id, { $pull: { order: productId } });
+    res.status(200).send({ success: true, message: 'Product removed from order successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error when removing product from order: ' + error.message });
+  }
 });
