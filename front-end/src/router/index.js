@@ -8,6 +8,11 @@ import Userinfopage from '../views/UserInfoPage.vue'
 import sellpage from '../views/sellpage.vue'
 import Checkout_page from '../views/checkout_page.vue'
 import Order_page from '../views/Order.vue'
+import Uniplo from '../views/company_sell_page/uniplo.vue'
+import CompanyProductDetailVue from '../views/company_sell_page/company_productDetail.vue'
+import TransRec from '../views/company_sell_page/trans_record.vue'
+import Myauction from '../views/Nft_marketplace.vue'
+
 
 
 
@@ -61,6 +66,28 @@ const router = createRouter({
       name:'orderpage',
       component: Order_page,
       props: true
+    },
+    {
+      path: '/uniplo',
+      name : 'uniplo',
+      component: Uniplo,
+      props: true
+    },{
+      path: '/:companyproductId',
+      name: 'company_product_detail',
+      component: CompanyProductDetailVue,
+      props: true
+    },{
+      path:'/transactionRecord',
+      name: 'transRec',
+      component : TransRec,
+      props:true
+    },
+    {
+      path: '/myauction',
+      name:'myauction',
+      component : Myauction,
+      props:true
     }
 
   ]

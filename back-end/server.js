@@ -3,6 +3,7 @@
 
 const {Product} = require('./models/product');
 const {Users} = require('./models/UserData')
+const {CompanyProduct} = require('./models/company_product')
 
 const express = require('express');
 const multer = require('multer');
@@ -165,7 +166,7 @@ mongoose.connect(url,{ useNewUrlParser: true, dbName: 'Rechain' })
     }
   
   try {
-    const products = await Product.find({_id: {$in: user.cart}})
+    const products = await CompanyProduct.find({_id: {$in: user.cart}})
     console.log(JSON.stringify(products));
     res.status(200).json(products);
   } catch (error) {
@@ -243,7 +244,8 @@ app.post('/api/auction', upload.single('productImage'),async (req, res) => {
       inventory: req.body.inventory,
       location: req.body.location,
       imageName: req.file.filename,
-      available: true
+      available: true,
+      status:1
     });
     // 保存到数据库
     const savedProduct = await newProduct.save();
@@ -328,7 +330,7 @@ app.get('/api/cart/:id', async (req, res) => {
 app.post('/api/search', async(req, res)=>{
   try{
     const keyword = req.body.keyword;
-    const results = await Product.find({ name: new RegExp(keyword, 'i') },{ available: true });
+    const results = await CompanyProduct.find({ name: new RegExp(keyword, 'i') },{ available: true });
     res.json(results);
     console.log(results);
     } catch (err) {
@@ -360,7 +362,7 @@ app.get('/api/orders', async (req,res) => {
     return res.status(400).json({ message: "Cart not found in user session" });
   }
 try {
-  const products = await Product.find({_id: {$in: user.order}})
+  const products = await CompanyProduct.find({_id: {$in: user.order}})
   console.log(JSON.stringify(products));
   res.status(200).json(products);
 } catch (error) {
@@ -371,7 +373,7 @@ try {
 app.put('/api/available/:id', async (req, res) => {
   try {
     const { available } = req.body; // Extract the 'available' field from the request body
-    const product = await Product.findByIdAndUpdate(req.params.id, { available });
+    const product = await CompanyProduct.findByIdAndUpdate(req.params.id, { available });
 
     if (!product) {
         res.status(404).send('Product not found');
@@ -397,3 +399,64 @@ app.post('/api/orders/remove', async (req, res) => {
     res.status(500).send({ error: 'Error when removing product from order: ' + error.message });
   }
 });
+
+app.post('/api/finishedOrder', async (req, res) => {
+
+  const {productId} = req.body;
+
+  try {
+    const user = await Users.findByIdAndUpdate(req.session.user._id, { $push: { finished_order: productId } },{new:true});
+    res.status(200).json({ message: 'Product added to cart successfully.' });
+  } catch (error) {
+    // handle error
+    res.status(500).send({ message: 'Error when adding product to cart: ' + error.message });
+  }
+});
+
+app.get('/api/UniPLo', async (req, res) => {
+  console.log('Handling product request...');
+  try {
+    const companyProduct = await CompanyProduct.find({ Company: "UniPLO" });
+    console.log('Found products:', companyProduct);
+    res.json(companyProduct);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).send('Error fetching products');
+  }
+});
+
+app.get('/api/UniPLO/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await CompanyProduct.findById(id); // 使用 findById 方法查找特定 id 的產品
+    res.status(200).json(product); // 返回找到的產品資料
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.put('/api/uploadPayment', async (req, res) => {
+  try {
+      const user = await Users.findById(req.session.user._id);
+      user.Payment = req.body.Payment;  
+      user.tempCarbonPoint = req.body.tempCarbonPoint;
+      await user.save();
+      res.status(200).json(user);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+})
+
+app.put('/api/FinishOrder', async (req, res) => {
+  try {
+      const user = await Users.findById(req.session.user._id);
+      user.Payment = req.body.Payment;  
+      user.tempCarbonPoint = req.body.tempCarbonPoint;
+      user.CarbonPoint = req.body.CarbonPoint;
+      await user.save();
+      res.status(200).json(user);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+})

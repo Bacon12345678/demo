@@ -2,8 +2,6 @@
   <div @click="checkLoginStatus" class="hover-effect">
       <div>
       <img src="@/assets/image/cart.svg" alt="cart" width="22" height="22" class="rounded-circle">
-      <span class="badge m-2 rounded-pill badge-notification bg-danger"
-            style=" position: absolute;top: 7px;display: block; font-size: 10px;">{{cartItems.length}}</span>
       </div>
   </div>
 </template>
@@ -16,9 +14,11 @@ import {isLoggedIn} from '@/api/auth.js'
 import { ElMessageBox } from 'element-plus';
 import { ref } from 'vue';
 
+
 const router = useRouter();
 
 const loggedIn = ref();
+
 
 const checkLoginStatus = async () =>{
   loggedIn.value = await isLoggedIn(); 

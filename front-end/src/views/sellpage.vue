@@ -31,17 +31,15 @@
 <script setup>
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import FormData from "form-data";
 
 
 const router = useRouter();
 
-
-
-
-
 const auction = async () => {
-  // 創建一個 FormData 實例
+  
   const formData = new FormData();
+  
 
   // 添加文件和其他字段到 formData
   formData.append('productImage', document.getElementById('product_image').files[0]);
@@ -67,4 +65,5 @@ const auction = async () => {
     console.error('Error creating product:', err);
   }
 };
+
 </script>

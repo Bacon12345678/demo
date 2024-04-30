@@ -5,9 +5,9 @@
 
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
           <ul class="dropdown-menu text-small">
-            <a href="javascript:;" @click="$router.push('/userinfo')"><li>個人資料</li></a>
-            <li><a class="dropdown-item" href="#">我的商城</a></li>
-            <li><a class="dropdown-item" href="#">購買紀錄</a></li>
+            <a href="javascript:;" class="" @click="$router.push('/userinfo')"><li>個人資料</li></a>
+            <a href="javascript:;"  class="m-1" @click="$router.push('/myauction')"><li>我的商品</li></a>
+            <a href="javascript:;" class="" @click="$router.push('/transactionRecord')"><li>購買紀錄</li></a>
             <li><hr class="dropdown-divider"></li>
             <li><a href="javascript:;" @click="logout">登出</a></li>
           </ul>

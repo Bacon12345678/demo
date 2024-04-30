@@ -6,6 +6,7 @@
         <div class="col"></div>
         <div class="col display-6">價格</div>
         <div class="col"></div>
+        <div class="col display-6">碳積分</div>
         <hr/>
       </div>
     </div>
@@ -23,6 +24,9 @@
         <div class="col">
           {{ product.amount }}
         </div>
+        <div class="col">
+          {{ product.carbonPoint }}
+        </div>
       </div>
       <hr />
     </div>
@@ -37,6 +41,20 @@
                 </el-radio>
             </el-radio-group>
         </el-form>
+        <div class="col m-5 text-center">
+            <div>
+                <p>可獲得碳積分：</p>
+                <p class="text-success"> {{ TotalCarbonPoint }}</p>
+            </div>
+        </div>
+        <div class="col m-5 text-center">
+            碳積分折抵
+            <input type="number" id="pointsInput" min="0" max=MaxPoint v-model="points">
+        </div>
+        <div class="col m-5 text-center">
+            <p>擁有碳積分：</p>
+            <p class="text-success">{{ MaxPoint }}</p>
+        </div>
         <div class="col m-5 text-center">
             <div>
                 <h3>訂單金額</h3>
@@ -57,8 +75,10 @@ import { ref,onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 
+
 const router = useRouter();
 const cartItems = ref([]);
+
 
 const form = ref({
     payment:''
@@ -70,22 +90,54 @@ const rules = {
     ]
 };
 
+var points = ref(0);
+var MaxPoint;
+
+
+const TotalPrice = computed(() => {
+    return cartItems.value.reduce((total, product) => {
+        return total + product.price;
+    }, 0) - points.value;
+    
+});
+
+const maxPoint = async () => {
+    const userdata = await axios.get('http://localhost:3000/api/user-info', { withCredentials: true });
+    MaxPoint = userdata.data.CarbonPoint;
+
+    // 獲取輸入框並設定它的max屬性
+    const input = document.getElementById('pointsInput');
+    input.max = MaxPoint;
+
+    // 添加一個事件監聽器來在用戶輸入時檢查輸入的值
+    input.onchange = function() {
+        if (this.value > MaxPoint) {
+            this.value = MaxPoint;
+        }
+        points.value = this.value;
+    }
+
+    return MaxPoint;
+}
 
 const fetchCartItems = async () => {
     try {
         const response = await axios.get('http://localhost:3000/api/user-cart', { withCredentials: true });
         cartItems.value = response.data;
         console.log(response.data);
+        maxPoint();
     } catch (error) {
         console.error(error);
     }
 };
 
-const TotalPrice = computed(() => {
-    return cartItems.value.reduce((total,product) =>{
-        return total + product.price;
+
+const TotalCarbonPoint = computed(()=>{
+    return cartItems.value.reduce((total,product)=>{
+        return total + product.carbonPoint;
     }, 0);
-});
+})
+
 
 onMounted(fetchCartItems);  
 
@@ -100,14 +152,21 @@ const Order = async () => {
                 { productId: product._id }, 
                 { withCredentials: true }
             );
-            await axios.put(`http://localhost:3000/api/unavailable/${product._id}`, { available: false }, { withCredentials: true });
+            await axios.put(`http://localhost:3000/api/available/${product._id}`, { available: false }, { withCredentials: true });
             await axios.post('http://localhost:3000/api/carts/remove',
             { productId: product._id },
             { withCredentials: true }
     );
-        } catch (error) {
+} catch (error) {
             console.error(`Error when adding product to cart: `, error);
         }
+    }
+
+    try {
+        await axios.put('http://localhost:3000/api/uploadPayment', {  Payment: TotalPrice.value, 
+        tempCarbonPoint : TotalCarbonPoint.value  + MaxPoint - points.value}, { withCredentials: true })
+    } catch (error) {
+        console.log(error);
     }
 
     router.push({ name: 'orderpage' });

@@ -6,6 +6,7 @@ import carbon_point from './navbar_components/carbon_point.vue';
 import cart from './navbar_components/cart.vue';
 import auction from './navbar_components/auction.vue';
 import user_profile from './navbar_components/user_profile.vue';
+import connect_wallet from './navbar_components/connect_wallet.vue';
 
 
 </script>
@@ -27,10 +28,12 @@ import user_profile from './navbar_components/user_profile.vue';
             <Shop_sale />
           </ul>
             <search_bar />
+            <connect_wallet/>
             <carbon_point />
             <cart />
             <auction />
             <user_profile />
+           
         </div>
       </div>
     </nav>

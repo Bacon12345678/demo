@@ -10,7 +10,7 @@
 
       <!-- Password input -->
       <el-form-item prop="password" label="密碼">
-        <el-input v-model="form.password" />
+        <el-input v-model="form.password" type="password"/>
       </el-form-item>
 
       <el-button @click="doLogin" size="large">登入</el-button>

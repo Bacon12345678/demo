@@ -8,9 +8,10 @@
     <p>{{ product.info }}</p>
     <p>Price: {{ product.price }}</p>
   </div>
+  <button @click="purchaseNFT">購買</button>
   <div>
     <button class="add-to-cart" @click="addToCart">add to cart</button>
-      </div>
+  </div>
 </template>
 
 <script setup>
@@ -51,4 +52,6 @@ const addToCart = async () => {
     console.error(`Error when adding product to cart: `, error);
   }
 };
+
+
 </script>

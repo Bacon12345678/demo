@@ -5,7 +5,7 @@
             <img src="@/assets/image/coin.svg" alt="mdo" width="22" height="22" class="rounded-circle">
             <i class="fas fa-envelope fa-2x" ></i>
             <span class="badge rounded-pill badge-notification bg-success"
-            style=" position: absolute;top: 0px; right: 8px;display: block; font-size: 10px;">94</span>
+            style=" position: absolute;top: 0px; right: 8px;display: block; font-size: 10px;">66</span>
           </a> 
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href="#">個人資料</a></li>

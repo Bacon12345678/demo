@@ -17,13 +17,13 @@
       <hr />
     </div>
 
-    <button>完成交易</button>
+    <button @click="FinishOrder">完成交易</button>
     <button class="bg-danger" @click="cancelOrder">取消交易</button>
 </template>
 
 <script setup>
 import axios from 'axios';
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, computed} from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 
@@ -60,10 +60,30 @@ const cancelOrder = async() =>{
   } catch (error) {
     console.error(error);
   }
+
+  try {
+    await axios.put('http://localhost:3000/api/uploadPayment', {  Payment: 0 , 
+      tempCarbonPoint : 0 }, { withCredentials: true })
+  } catch (error) {
+   console.log(error) 
+  }
 }
 
-const finshOrder =() =>{
-  
-}
+const FinishOrder = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/user-info', { withCredentials: true });
+          let newPoint = response.data.CarbonPoint;
+          await axios.put('http://localhost:3000/api/FinishOrder', {  Payment: 0 , 
+            tempCarbonPoint : 0, CarbonPoint : newPoint}, { withCredentials: true })
+            ElMessageBox.alert('交易成功！', 'Rechain', {
+              confirmButtonText: '確定',
+              callback: action => {
+              router.replace('/');
+            }
+        });
+        } catch (error) {
+            console.error(`Error when adding product to cart: `, error);
+    }
+};
 
 </script>

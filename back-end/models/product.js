@@ -12,7 +12,8 @@ const productSchema = new mongoose.Schema({
   info: String,
   inventory: Number,
   date: Date,
-  available: Boolean
+  available: Boolean,
+  status:Number,
 }, { collection: 'product' });
 
 const Product = mongoose.model('Product', productSchema);
