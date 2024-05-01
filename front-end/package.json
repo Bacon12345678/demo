@@ -11,9 +11,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^3.4.0",
     "axios": "^1.6.8",
     "element-plus": "^2.6.2",
     "express": "^4.18.3",
+    "ipfs": "^0.66.1",
     "mongodb": "^6.3.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
@@ -21,10 +23,12 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/test-utils": "^2.4.4",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
+    "hardhat": "^2.22.3",
     "jsdom": "^24.0.0",
     "vite": "^5.0.11",
     "vitest": "^1.2.2"

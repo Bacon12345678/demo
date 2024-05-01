@@ -12,6 +12,9 @@ import Uniplo from '../views/company_sell_page/uniplo.vue'
 import CompanyProductDetailVue from '../views/company_sell_page/company_productDetail.vue'
 import TransRec from '../views/company_sell_page/trans_record.vue'
 import Myauction from '../views/Nft_marketplace.vue'
+import Nft_marketplace from '../../NFT/components/Marketplace.vue'
+import NFTpage from '../../NFT/components/NFTpage.vue'
+
 
 
 
@@ -22,8 +25,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'sale_section',
-      component: SaleSection,
+      name: 'Nft_marketplace',
+      component: Nft_marketplace,
       props: true
     },
     {
@@ -87,6 +90,12 @@ const router = createRouter({
       path: '/myauction',
       name:'myauction',
       component : Myauction,
+      props:true
+    },
+    {
+      path:'/nftPage/:tokenId',
+      name:'nftpage',
+      component:NFTpage,
       props:true
     }
 
