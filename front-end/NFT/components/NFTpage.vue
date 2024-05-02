@@ -1,13 +1,21 @@
 <template>
-    <div>NFTPage</div>
-    <div>{{ data.name }}</div>
-    <img :src="data.image" alt="" crossOrigin="anonymous" class="w-50"/>
-    <div>{{ data.description }}</div>
-    <div>售價：{{ data.price }}</div>
-    <div>Token ID：{{ data.tokenId }}</div>
-    <div>賣家：{{ data.seller }}</div>
-    <div>擁有者：{{ data.owner }}</div>
-    <button @click="buyNFT">購買</button>
+   <button @click="goback">回上頁</button>
+  <div class="container mt-3 p-5" style="margin-left:10rem;">
+    <div class="row ">
+      <div class="col ">
+        <img :src="data.image" alt="" crossOrigin="anonymous" class="w-75"/>
+      </div>
+
+      <div class="col">
+        <h1 class="mb-5">{{ data.name }}</h1>
+        <p class="fs-4 mt-5">商品敘述：</p><br><p class="fs-5">{{ data.description }}</p>
+        <p class="fs-5 mt-5">售價：{{ data.price }}</p>
+        <p class="fs-5 mt-5">賣家：{{ data.seller }}</p>
+        <button style="margin-top: 9rem; margin-left: 10rem; width: 6rem;" @click="buyNFT">購買</button>
+      </div>
+    </div>
+  </div>
+    
 </template>
 
 <script setup>
@@ -54,7 +62,7 @@ const getNFTData = async (tokenId) => {
     data.value.image = GetIpfsUrlFromPinata(data.value.image);
 };
 
-const buyNFT = async (tokenId) => {
+const buyNFT = async () => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -62,16 +70,20 @@ const buyNFT = async (tokenId) => {
     let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer);
     const salePrice = ethers.utils.parseUnits(data.value.price, 'ether')
     message.value = "Buying the NFT... Please Wait (Upto 5 mins)"
-    let transaction = await contract.executeSale(tokenId, {value:salePrice});
+    let transaction = await contract.executeSale(data.value.tokenId, { value: salePrice });
     await transaction.wait();
 
     alert('You successfully bought the NFT!');
     message.value = "";
-  }
-  catch(e) {
-    alert("Upload Error"+e)
+  } catch (e) {
+    alert("Upload Error" + e)
   }
 };
+
+
+const goback =() =>{
+  window.history.back();
+}
 
 
 onMounted(async () => {

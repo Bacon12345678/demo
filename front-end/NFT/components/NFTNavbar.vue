@@ -19,7 +19,7 @@
               <router-link to="/sellNFT">List My NFT</router-link>
             </li>              
             <li class='hover:border-b-2 hover:pb-0 p-2'>
-              <router-link to="/profile">Profile</router-link>
+              <router-link to="/myNFTs">Profile</router-link>
             </li>  
             <li>
               <button class="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm" @click="connectWebsite">{{connected? "Connected":"Connect Wallet"}}</button>

@@ -5,11 +5,12 @@
 
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
           <ul class="dropdown-menu text-small">
-            <a href="javascript:;" class="" @click="$router.push('/userinfo')"><li>個人資料</li></a>
-            <a href="javascript:;"  class="m-1" @click="$router.push('/myauction')"><li>我的商品</li></a>
-            <a href="javascript:;" class="" @click="$router.push('/transactionRecord')"><li>購買紀錄</li></a>
+            <div href="javascript:;" class="profilebutton m-1" @click="$router.push('/userinfo')"><li>個人資料</li></div>
+            <div href="javascript:;" class="profilebutton m-1" @click="$router.push('/myauction')"><li>我的商品</li></div>
+            <div href="javascript:;" class="profilebutton m-1" @click="$router.push('/transactionRecord')"><li>商家購買紀錄</li></div>
+            <div href="javascript:;" class="profilebutton m-1" @click="$router.push('/myNFTs')"><li>我的NFT</li></div> 
             <li><hr class="dropdown-divider"></li>
-            <li><a href="javascript:;" @click="logout">登出</a></li>
+            <li><span href="javascript:;" class="profilebutton" @click="logout">登出</span></li>
           </ul>
           </a>          
         </div>
@@ -62,3 +63,12 @@ const logout = async () => {
   }
 };
 </script>
+
+<style>
+
+.profilebutton:hover{
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(143, 142, 142, 0.5); 
+}
+
+</style>

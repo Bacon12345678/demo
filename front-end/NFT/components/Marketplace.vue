@@ -1,21 +1,21 @@
 <template>
   <div>
-    <NFTNavbar/>
     <div>
-      <div class="container text-center m-5">
+      <div class="container text-center mt-4 mb-5">
         <h1>所有商品</h1>
       </div>
       <div v-if="data && data.length > 0" class="row">
         <div v-for="(value, index) in data" :key="index" class="col text-center">
-          <router-link :to="`/nftPage/${value.tokenId}`">
-          <img :src="value.IPFSUrl" alt="" class = "w-50"/>
-          <div>{{ value.name }}</div>
-          <div>{{ value.description }}</div>
-        </router-link>
+          <div @click="navigateToNFTPage(value.tokenId)" class="NFTsellsectoin" style="cursor: pointer;">
+            <div><p class="fs-3">{{ value.name }}</p></div>
+            <img :src="value.IPFSUrl" alt="" class="w-50"/>
+            <div><p class="mt-3">{{ value.description }}</p></div>
+            <div><p>售價：{{ value.price }} ETH</p></div>
+          </div>
         </div>
       </div>
-      <div v-else>
-        加載中...
+      <div v-else class="text-center">
+        <h1>確保連接MetaMask<br>等待數據加載中...</h1>
       </div>
     </div>
   </div>
@@ -27,10 +27,12 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import MarketplaceJSON from "../Marketplace.json";
 import { GetIpfsUrlFromPinata } from "../utils";
-import NFTNavbar from './NFTNavbar.vue';
+import { useRouter } from 'vue-router';
 
 const data = ref([]); // 初始化為一個空數組
 const dataFetched = ref(false);
+
+const router =useRouter();
 
 const getAllNFTs = async () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -83,4 +85,16 @@ onMounted(async () => {
     console.log(error)
   }
 });
+
+const navigateToNFTPage = async(tokenId) => {
+  router.push(`/nftPage/${tokenId}`);
+};
+
 </script>
+
+<style>
+.NFTsellsectoin:hover {
+  box-shadow: 0 0 5px rgba(143, 142, 142, 0.5); 
+}
+
+</style>

@@ -22,8 +22,6 @@
 
 
   <script setup>
-  //黑馬小兔鮮 day5-03、04優化未設置
-
     import {ref} from 'vue'
     import axios from 'axios';
     import { useRouter } from 'vue-router';

@@ -5,7 +5,6 @@ import ProductDetailVue from '../views/product_detail.vue'
 import ShoppingCartPage from '../views/ShoppingCartPage.vue'
 import sale_item_test from '../views/sale_section_component/sale_item.vue'
 import Userinfopage from '../views/UserInfoPage.vue'
-import sellpage from '../views/sellpage.vue'
 import Checkout_page from '../views/checkout_page.vue'
 import Order_page from '../views/Order.vue'
 import Uniplo from '../views/company_sell_page/uniplo.vue'
@@ -14,6 +13,8 @@ import TransRec from '../views/company_sell_page/trans_record.vue'
 import Myauction from '../views/Nft_marketplace.vue'
 import Nft_marketplace from '../../NFT/components/Marketplace.vue'
 import NFTpage from '../../NFT/components/NFTpage.vue'
+import MyNFT from '../../NFT/components/Profile.vue'
+import SellNFT from '../../NFT/components/SellNFT.vue'
 
 
 
@@ -57,7 +58,7 @@ const router = createRouter({
     },{
       path:'/sell',
       name: 'sellpage',
-      component: sellpage,
+      component: SellNFT,
       props: true
     },{
       path:'/checkoutbill',
@@ -97,7 +98,12 @@ const router = createRouter({
       name:'nftpage',
       component:NFTpage,
       props:true
-    }
+    },{
+    path:'/myNFTs',
+    name:'myNFTs',
+    component : MyNFT,
+    props:true
+  }
 
   ]
 })
