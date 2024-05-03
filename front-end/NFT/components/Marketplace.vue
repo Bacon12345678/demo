@@ -5,7 +5,7 @@
         <h1>所有商品</h1>
       </div>
       <div v-if="data && data.length > 0" class="row">
-        <div v-for="(value, index) in data" :key="index" class="col text-center">
+        <div v-for="(value, index) in filteredData" :key="index" class="col text-center" >
           <div @click="navigateToNFTPage(value.tokenId)" class="NFTsellsectoin" style="cursor: pointer;">
             <div><p class="fs-3">{{ value.name }}</p></div>
             <img :src="value.IPFSUrl" alt="" class="w-50"/>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import MarketplaceJSON from "../Marketplace.json";
@@ -33,6 +33,10 @@ const data = ref([]); // 初始化為一個空數組
 const dataFetched = ref(false);
 
 const router =useRouter();
+
+const filteredData = computed(() => {
+  return data.value.filter((item, index) => index !== 0);
+  });
 
 const getAllNFTs = async () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
