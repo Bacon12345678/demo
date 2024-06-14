@@ -15,6 +15,7 @@ import Nft_marketplace from '../../NFT/components/Marketplace.vue'
 import NFTpage from '../../NFT/components/NFTpage.vue'
 import MyNFT from '../../NFT/components/Profile.vue'
 import SellNFT from '../../NFT/components/SellNFT.vue'
+import ReviewPage from '../views/ReviewPage.vue'
 
 
 
@@ -103,8 +104,12 @@ const router = createRouter({
     name:'myNFTs',
     component : MyNFT,
     props:true
+  },{
+    path:'/review',
+    name:'Review',
+    component:ReviewPage,
+    props:true
   }
-
   ]
 })
 

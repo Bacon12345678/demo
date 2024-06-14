@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
-import router from '../router';
+
 
 export default createStore({
   state: {
@@ -14,10 +14,9 @@ export default createStore({
   actions: {
     async searchProduct({ commit }, keyword) {
       const response = await axios.post('http://localhost:3000/api/search', { keyword });
-      commit('setSearchResults', response.data);   
-      router.replace('/');
-      if (response.data.length === 0) { 
-        alert('查無產品'); 
+      commit('setSearchResults', response.data);
+      if (response.data.length === 0) {
+        alert('查無產品');
       }
     }
   }

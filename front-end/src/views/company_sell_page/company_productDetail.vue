@@ -16,7 +16,7 @@
         <p class="fs-5 text-info">產品狀況：{{ companyproduct.condition }}</p>
         <p class="fs-5">公司：{{ companyproduct.Company }}</p>
         <p class="fs-5 text-success">可獲得炭積分：{{ companyproduct.carbonPoint }}</p>
-        <P class="fs-5 text-primary">#{{ companyproduct.classification }}</P>
+        <p class="fs-5 text-primary">#{{ companyproduct.classification }}</P>
       </div>
     </div>
   </div>

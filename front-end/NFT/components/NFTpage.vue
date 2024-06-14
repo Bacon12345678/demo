@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import MarketplaceJSON from "../Marketplace.json";
@@ -33,6 +33,7 @@ const message = ref("");
 const currAddress = ref("0x");
 
 const route = useRoute();
+const router = useRouter();
 const tokenId = route.params.tokenId;
 
 const getNFTData = async (tokenId) => {
@@ -75,6 +76,7 @@ const buyNFT = async () => {
 
     alert('You successfully bought the NFT!');
     message.value = "";
+    //router.replace('/review');
   } catch (e) {
     alert("Upload Error" + e)
   }

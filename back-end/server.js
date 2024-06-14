@@ -33,6 +33,8 @@ const jwt = require('jsonwebtoken');
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+
+
 const jwtSecret = process.env.JWT_SECRET;
 
 const url = `mongodb+srv://a367353933:scN0wuUVJBvnlw3s@rechain.rgxawov.mongodb.net/?retryWrites=true&w=majority`;
@@ -60,6 +62,8 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + Date.now() + '.' + file.mimetype.split('/')[1]); // 圖片的檔名
   }
 });
+
+
 
 const upload = multer({ storage: storage });
 
@@ -331,7 +335,7 @@ app.get('/api/cart/:id', async (req, res) => {
 app.post('/api/search', async(req, res)=>{
   try{
     const keyword = req.body.keyword;
-    const results = await CompanyProduct.find({ name: new RegExp(keyword, 'i') },{ available: true });
+    const results = await CompanyProduct.find({ name: new RegExp(keyword, 'i') });
     res.json(results);
     console.log(results);
     } catch (err) {

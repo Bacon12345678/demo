@@ -11,7 +11,7 @@
     </div>
       <div class = "collection-list mt-4 row gx-0 gy-3 ">
                 <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best"
-                  v-for="product in productList" :key="product.id"
+                  v-for="product in productList" :key="product._id"
                 >
                   <button @click="goToProductDetail(product._id)" style="background-color: white; color: black;">
                     <div class = "collection-img position-relative">
